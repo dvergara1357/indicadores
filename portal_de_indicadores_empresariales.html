@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Portal de Indicadores</title>
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    display: flex;
+    background-color: #F7F6F2;
+}
+
+.sidebar {
+    width: 260px;
+    background: #0D0D0D;
+    color: #FFFFFF;
+    height: 100vh;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #F5A623;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    margin-bottom: 8px;
+    color: #AAAAAA;
+    text-decoration: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.sidebar a:hover {
+    background: #1C1C1C;
+    color: #FFFFFF;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    background: #FFFFFF;
+    padding: 15px 20px;
+    border-bottom: 2px solid #F5A623;
+    font-weight: bold;
+    color: #0D0D0D;
+}
+
+.content {
+    padding: 20px;
+    height: calc(100vh - 60px);
+}
+
+.kpi-card {
+    background: #FFFFFF;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 5px solid #F5A623;
+}
+
+.kpi-card h4 {
+    color: #555555;
+    margin-bottom: 10px;
+}
+
+.kpi-card h2 {
+    color: #0D0D0D;
+    margin: 0;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+        <img src="logo.png" alt="Dolmen" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #F5A623;">
+        <div style="font-weight:600;">Dolmen</div>
+    </div>
+    <h2>📊 Indicadores</h2>
+
+    <a onclick="cargar('pesv2026')">PESV 2026</a>
+    <a onclick="cargar('pesv2025')">PESV 2025</a>
+    <a onclick="cargar('compras')">Compras Locales</a>
+    <a onclick="cargar('seguridad')">Seguridad Locativa</a>
+    <a onclick="cargar('sst')">SST</a>
+
+    <h2>📁 Datos</h2>
+    <a href="https://dolmensa-my.sharepoint.com/:x:/g/personal/sduque_dolmen_co/IQD-ODBpTJucQav4X27sgDLkAbxDBDr28C5jj4ccfkgkCHY?e=Vszwr6" target="_blank">Excel General</a>
+</div>
+
+<div class="main">
+    <div class="header">Portal de Indicadores Empresariales</div>
+
+    <div class="content" id="contenido">
+        <div id="inicio" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+            <div class="kpi-card">
+                <h4>Cumplimiento SST</h4>
+                <h2>92%</h2>
+            </div>
+            <div class="kpi-card">
+                <h4>Ejecución PESV</h4>
+                <h2>88%</h2>
+            </div>
+            <div class="kpi-card">
+                <h4>Compras Locales</h4>
+                <h2>75%</h2>
+            </div>
+            <div class="kpi-card">
+                <h4>Seguridad Locativa</h4>
+                <h2>95%</h2>
+            </div>
+
+            <div style="grid-column: span 4; margin-top:10px;">
+                <a href="https://www.dolmen.net.co/" target="_blank" style="display:inline-block; background:#F5A623; color:#0D0D0D; padding:12px 20px; border-radius:8px; text-decoration:none; font-weight:600;">
+                    Ir a página web Dolmen
+                </a>
+            </div>
+        </div>
+
+        <iframe id="visor" style="display:none;"></iframe>
+    </div>
+</div>
+
+<script>
+function cargar(tipo) {
+    let url = "";
+
+    if(tipo === "pesv2026"){
+        url = "https://app.powerbi.com/view?r=eyJrIjoiMzQ5M2Q0MTItMjM5OC00ZWU3LTk1NzMtOGYyMDg4M2MzNjBmIiwidCI6Ijk3NmY0OTkwLTg2ZTYtNDdlNC1iYzY4LTM2Mjg2MmI0ZjNkZCJ9";
+    }
+
+    if(tipo === "pesv2025"){
+        url = "https://app.powerbi.com/view?r=eyJrIjoiNzdjNDg0OGUtYzAzNC00OTFhLWFlYWMtN2YxYWRmNWE4NGY3IiwidCI6Ijk3NmY0OTkwLTg2ZTYtNDdlNC1iYzY4LTM2Mjg2MmI0ZjNkZCJ9";
+    }
+
+    if(tipo === "compras"){
+        url = "https://app.powerbi.com/view?r=eyJrIjoiYzE4MDBmYWYtZWY5Zi00NTg3LTg3YTYtYTVlYmU0ZTFjYTUwIiwidCI6Ijk3NmY0OTkwLTg2ZTYtNDdlNC1iYzY4LTM2Mjg2MmI0ZjNkZCJ9";
+    }
+
+    if(tipo === "seguridad"){
+        url = "https://app.powerbi.com/view?r=eyJrIjoiZGIyN2MxZGYtZjJiOC00ZDY5LThiMWQtOWMwOTE0MzgyNGZkIiwidCI6Ijk3NmY0OTkwLTg2ZTYtNDdlNC1iYzY4LTM2Mjg2MmI0ZjNkZCJ9";
+    }
+
+    if(tipo === "sst"){
+        url = "https://app.powerbi.com/view?r=eyJrIjoiNjQzZGMwZjctMjI0Ni00YjJlLTg4ZjQtOGM4OTIyZjYzYTllIiwidCI6Ijk3NmY0OTkwLTg2ZTYtNDdlNC1iYzY4LTM2Mjg2MmI0ZjNkZCJ9";
+    }
+
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("visor").style.display = "block";
+    document.getElementById("visor").src = url;
+}
+</script>
+
+</body>
+</html>
