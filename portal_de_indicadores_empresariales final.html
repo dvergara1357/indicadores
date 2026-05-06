@@ -340,31 +340,32 @@
 <script>
   // ── DATOS ──
   const procesos = [
-    { nombre: "Amoblamiento Urbano",       responsable: "Sneyder Quintero",    pct: 75  },
-    { nombre: "Prod. Metalmecánica",        responsable: "Luis Daza",           pct: 100 },
-    { nombre: "Iluminación Urbana",         responsable: "Maria Luisa Osorio",  pct: 80  },
-    { nombre: "Compras",                    responsable: "Ana Cortés",          pct: 83  },
+    { nombre: "Amoblamiento Urbano",       responsable: "Sneyder Quintero",    pct: 67  },
+    { nombre: "Prod. Metalmecánica",        responsable: "Luis Daza",           pct: 0   },
+    { nombre: "Iluminación Urbana",         responsable: "Maria Luisa Osorio",  pct: 100 },
+    { nombre: "Compras",                    responsable: "Ana Cortés",          pct: 33  },
     { nombre: "Logística",                  responsable: "Ana Cortés",          pct: 100 },
-    { nombre: "GTH",                        responsable: "Andrea Gómez",        pct: 78  },
-    { nombre: "Financiera",                 responsable: "Karina Franco",       pct: 75  },
-    { nombre: "Servicios Administrativos",  responsable: "Rossana Cillis",      pct: 100 },
-    { nombre: "TIC",                        responsable: "Johan Charris",       pct: 83  },
-    { nombre: "Servicio al Cliente",        responsable: "Antonella Arango",    pct: 100 },
-    { nombre: "Comunicación",               responsable: "Andrea Salgado",      pct: 100 },
-    { nombre: "Planeación Proyectos",       responsable: "Lilian Guerrero",     pct: 100 },
+    { nombre: "GTH",                        responsable: "Andrea Gómez",        pct: 0   },
+    { nombre: "Financiera",                 responsable: "Karina Franco",       pct: 8   },
+    { nombre: "Servicios Administrativos",  responsable: "Rossana Cillis",      pct: 44  },
+    { nombre: "TIC",                        responsable: "Johan Charris",       pct: 0   },
+    { nombre: "Servicio al Cliente",        responsable: "Antonella Arango",    pct: 57  },
+    { nombre: "Comunicación",               responsable: "Andrea Salgado",      pct: 86  },
+    { nombre: "Planeación Proyectos",       responsable: "Lilian Guerrero",     pct: 89  },
     { nombre: "Asuntos Legales",            responsable: "Adiel Carrascal",     pct: 100 },
-    { nombre: "Infraestructura y Activos",  responsable: "Rosana Barraza",      pct: 67  },
+    { nombre: "Infraestructura y Activos",  responsable: "Rosana Barraza",      pct: 33  },
     { nombre: "Sagrilaft",                  responsable: "Lilian Guerrero",     pct: 100 },
-    { nombre: "SGI",                        responsable: "Christian Cañas",     pct: 67  },
-    { nombre: "Salud",                      responsable: "Kelly Martínez",      pct: 100 },
-    { nombre: "Seguridad",                  responsable: "Christian Cañas",     pct: 100 },
-    { nombre: "PESV",                       responsable: "Eddie Nieto",         pct: 92  },
-    { nombre: "Ambiental",                  responsable: "Deisy Ballesteros",   pct: 91  },
+    { nombre: "SGI",                        responsable: "Christian Cañas",     pct: 54  },
+    { nombre: "Salud",                      responsable: "Kelly Martínez",      pct: 96  },
+    { nombre: "Seguridad",                  responsable: "Christian Cañas",     pct: 75  },
+    { nombre: "PESV",                       responsable: "Eddie Nieto",         pct: 57  },
+    { nombre: "Ambiental",                  responsable: "Deisy Ballesteros",   pct: 68  },
   ];
 
   function getColor(pct) {
     if (pct === 100) return '#10b981';
     if (pct >= 80)  return '#E87722';
+    if (pct >= 50)  return '#f59e0b';
     return '#ef4444';
   }
 
@@ -398,10 +399,12 @@
     const cx = 110, cy = 110, r = 85, stroke = 16;
     const total100  = procesos.filter(p => p.pct === 100).length;
     const totalAlto = procesos.filter(p => p.pct >= 80 && p.pct < 100).length;
-    const totalBajo = procesos.filter(p => p.pct < 80).length;
+    const totalMed  = procesos.filter(p => p.pct >= 50 && p.pct < 80).length;
+    const totalBajo = procesos.filter(p => p.pct < 50).length;
     const total = procesos.length;
 
     function arc(startAngle, endAngle, color) {
+      if (endAngle - startAngle < 0.5) return '';
       const toRad = a => (a - 90) * Math.PI / 180;
       const x1 = cx + r * Math.cos(toRad(startAngle));
       const y1 = cy + r * Math.sin(toRad(startAngle));
@@ -415,13 +418,15 @@
     const angTotal = 180;
     const a1 = angTotal * (total100 / total);
     const a2 = angTotal * (totalAlto / total);
-    const a3 = angTotal * (totalBajo / total);
+    const a3 = angTotal * (totalMed  / total);
+    const a4 = angTotal * (totalBajo / total);
     let cur = -90;
 
     let paths = '';
     paths += arc(cur, cur + a1, '#10b981'); cur += a1;
     paths += arc(cur, cur + a2, '#E87722'); cur += a2;
-    paths += arc(cur, cur + a3, '#ef4444');
+    paths += arc(cur, cur + a3, '#f59e0b'); cur += a3;
+    paths += arc(cur, cur + a4, '#ef4444');
 
     svg.innerHTML = `
       <path d="M25 110 A85 85 0 0 1 195 110" fill="none" stroke="#eee" stroke-width="${stroke}"/>
@@ -431,9 +436,10 @@
 
     const legend = document.getElementById('legendWrap');
     legend.innerHTML = `
-      <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>100% cumplimiento — ${total100} procesos</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>100% — ${total100} procesos</div>
       <div class="legend-item"><div class="legend-dot" style="background:#E87722"></div>80–99% — ${totalAlto} procesos</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Menor a 80% — ${totalBajo} procesos</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>50–79% — ${totalMed} procesos</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Menor a 50% — ${totalBajo} procesos</div>
     `;
   }
 
