@@ -250,63 +250,40 @@
   .legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
 
   /* ── DETALLE PROCESO ── */
-  #detallePanel {
-    display: none;
-    flex-direction: column;
-    height: 100%;
-  }
-  .detalle-header {
-    display: flex; align-items: center; gap: 14px;
-    margin-bottom: 16px; flex-shrink: 0;
-  }
+  #detallePanel { display: none; flex-direction: column; height: 100%; }
+  .detalle-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; flex-shrink: 0; }
   .back-btn {
     display: inline-flex; align-items: center; gap: 6px;
     background: var(--dolmen-orange); color: #fff;
     border: none; border-radius: 8px; padding: 8px 14px;
     font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 600;
-    cursor: pointer; transition: background 0.15s;
-    white-space: nowrap;
+    cursor: pointer; transition: background 0.15s; white-space: nowrap;
   }
   .back-btn:hover { background: var(--dolmen-orange-dark); }
-  .detalle-title {
-    font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a;
-  }
+  .detalle-title { font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: #1a1a1a; }
   .detalle-sub { font-size: 12px; color: #64748b; margin-top: 2px; }
-  .detalle-card {
-    background: #fff; border-radius: 14px; border: 1px solid #e5e5e5;
-    padding: 16px 18px; flex: 1; overflow: auto;
-  }
-  .detalle-table {
-    width: 100%; border-collapse: collapse; font-size: 10.5px;
-  }
+  .detalle-card { background: #fff; border-radius: 14px; border: 1px solid #e5e5e5; padding: 16px 18px; flex: 1; overflow: auto; }
+  .detalle-table { width: 100%; border-collapse: collapse; font-size: 10px; }
   .detalle-table th {
     background: #f8f7f5; font-family: 'Sora', sans-serif;
-    font-size: 10px; font-weight: 700; color: #64748b;
-    text-transform: uppercase; letter-spacing: 0.5px;
-    padding: 8px 10px; text-align: center; border-bottom: 2px solid #e5e5e5;
-    white-space: nowrap;
+    font-size: 9px; font-weight: 700; color: #64748b;
+    text-transform: uppercase; letter-spacing: 0.4px;
+    padding: 7px 3px; text-align: center; border-bottom: 2px solid #e5e5e5; white-space: nowrap;
   }
-  .detalle-table th.th-ind { text-align: left; min-width: 220px; }
-  .detalle-table td {
-    padding: 5px 10px; border-bottom: 1px solid #f0ede8;
-    vertical-align: middle; font-size: 10.5px; color: #374151;
-  }
-  .detalle-table td.td-ind { font-size: 10.5px; line-height: 1.3; }
+  .detalle-table th.th-ind  { text-align: left; min-width: 180px; padding-left: 8px; }
+  .detalle-table th.th-meta { text-align: left; min-width: 80px; padding-left: 6px; }
+  .detalle-table td { padding: 3px; border-bottom: 1px solid #f0ede8; vertical-align: middle; font-size: 10px; color: #374151; text-align: center; }
+  .detalle-table td.td-ind  { text-align: left; font-size: 10px; line-height: 1.3; padding: 5px 6px 5px 8px; }
+  .detalle-table td.td-meta { text-align: left; font-size: 9px; color: #64748b; padding: 5px 4px 5px 6px; line-height: 1.3; max-width: 90px; word-break: break-word; }
   .detalle-table tr:last-child td { border-bottom: none; }
   .detalle-table tr:hover td { background: #faf9f7; }
-  .cell-dot {
-    width: 22px; height: 22px; border-radius: 50%;
-    margin: 0 auto; display: block;
-  }
-  .cell-verde  { background: #10b981; }
+  .cell-bloque { display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 1px auto; height: 20px; }
+  .cell-verde    { background: #10b981; }
   .cell-amarillo { background: #f59e0b; }
-  .cell-rojo   { background: #ef4444; }
-  .cell-vacio  { background: #e5e7eb; }
-
-  .leyenda-detalle {
-    display: flex; gap: 18px; margin-top: 12px; flex-shrink: 0;
-    font-size: 10.5px; color: #64748b; flex-wrap: wrap;
-  }
+  .cell-rojo     { background: #ef4444; }
+  .cell-vacio    { background: #e5e7eb; }
+  .periodo-label { font-size: 7.5px; font-weight: 700; color: #fff; letter-spacing: 0.3px; text-transform: uppercase; white-space: nowrap; }
+  .leyenda-detalle { display: flex; gap: 18px; margin-top: 12px; flex-shrink: 0; font-size: 10.5px; color: #64748b; flex-wrap: wrap; }
   .leyenda-item { display: flex; align-items: center; gap: 6px; }
   .leyenda-dot  { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 </style>
@@ -409,6 +386,7 @@
             <thead>
               <tr>
                 <th class="th-ind">Indicador</th>
+                <th class="th-meta">Meta</th>
                 <th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th>
                 <th>May</th><th>Jun</th><th>Jul</th><th>Ago</th>
                 <th>Sep</th><th>Oct</th><th>Nov</th><th>Dic</th>
@@ -540,229 +518,170 @@
   buildGauge();
 
   // ── INDICADORES POR PROCESO ──
-  // Estado: V=verde(cumplió), A=amarillo(no cumplió), R=rojo(no diligenciado), ''=sin datos
+  // meses[]: 'V'=DC verde, 'A'=DN amarillo, 'R'=ND rojo, ''=sin dato
+  // Periodicidades: 'ANUAL','BIANUAL','SEMESTRAL','TRIMESTRE II','TRIMESTRE III','TRIMESTRE IV'
   const indicadoresPorProceso = {
-    "Amoblamiento Urbano": {
-      resp: "Sneyder Quintero",
-      items: [
-        { ind: "Cumplimiento de las obligaciones contractuales", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento de mantenimientos", meses: ['','','','','','','','','','','',''] },
-        { ind: "Intervención de parques", meses: ['','','','','','','','','','','',''] },
-        { ind: "Funcionamiento óptimo de semáforos", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Prod. Metalmecánica": {
-      resp: "Luis Daza",
-      items: [
-        { ind: "Cumplimiento de la programación", meses: ['','','','','','','','','','','',''] },
-        { ind: "Ejecución de cotizaciones para gastos Op.", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Iluminación Urbana": {
-      resp: "Maria Luisa Osorio",
-      items: [
-        { ind: "Reportes de Daños por municipio", meses: ['','','','','','','','','','','',''] },
-        { ind: "% de cumplimiento obligaciones contractuales O&M por municipio", meses: ['','','','','','','','','','','',''] },
-        { ind: "% de cumplimiento obligaciones contractuales MODERNIZACIÓN y EXPANSIONES por municipio", meses: ['','','','','','','','','','','',''] },
-        { ind: "Eficiencia del sistema lumínico por municipio", meses: ['','','','','','','','','','','',''] },
-        { ind: "Índice de Contratos con Luminarias de Ahorro Energético", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Compras": {
-      resp: "Ana Cortés",
-      items: [
-        { ind: "Clasificación de compras según procesos", meses: ['','','','','','','','','','','',''] },
-        { ind: "Porcentaje de compras planificadas", meses: ['','','','','','','','','','','',''] },
-        { ind: "Eficacia de la negociación con proveedores", meses: ['','','','','','','','','','','',''] },
-        { ind: "Eficacia de la negociación con contratista", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Logística": {
-      resp: "Ana Cortés",
-      items: [
-        { ind: "Exactitud de inventarios", meses: ['','','','','','','','','','','',''] },
-        { ind: "Exactitud de inventarios cíclico", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "GTH": {
-      resp: "Andrea Gómez",
-      items: [
-        { ind: "Índice de Movimientos internos", meses: ['','','','','','','','','','','',''] },
-        { ind: "Índice de Rotación", meses: ['','','','','','','','','','','',''] },
-        { ind: "Índice contratación", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento, Cobertura y Eficacia planes de capacitación o formación", meses: ['','','','','','','','','','','',''] },
-        { ind: "Índice de Ausentismo laboral", meses: ['','','','','','','','','','','',''] },
-        { ind: "Efectividad del periodo de prueba personal directo", meses: ['','','','','','','','','','','',''] },
-        { ind: "Índice de Gestión de Quejas Internas", meses: ['','','','','','','','','','','',''] },
-        { ind: "Medición clima laboral - Great Place to Work (Anual)", meses: ['','','','','','','','','','','',''] },
-        { ind: "Índice de proceso disciplinario", meses: ['','','','','','','','','','','',''] },
-        { ind: "Propuesta de valor de conciliación", meses: ['','','','','','','','','','','',''] },
-        { ind: "Estabilidad en el empleo", meses: ['','','','','','','','','','','',''] },
-        { ind: "Flexibilidad temporal", meses: ['','','','','','','','','','','',''] },
-        { ind: "Flexibilidad espacial", meses: ['','','','','','','','','','','',''] },
-        { ind: "Conocimiento, utilización, satisfacción, valoración y aplicabilidad de las medidas", meses: ['','','','','','','','','','','',''] },
-        { ind: "Maternidad", meses: ['','','','','','','','','','','',''] },
-        { ind: "Igualdad de oportunidades entre Hombres y Mujeres", meses: ['','','','','','','','','','','',''] },
-        { ind: "Igualdad de oportunidades - Otras formas de diversidad", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Financiera": {
-      resp: "Karina Franco",
-      items: [
-        { ind: "Índice de Cumplimiento de Ingresos (Ingresos facturados reales / proyectados)", meses: ['','','','','','','','','','','',''] },
-        { ind: "Índice de solvencia", meses: ['','','','','','','','','','','',''] },
-        { ind: "Índice razón de cobertura (Utilidad operacional / Gastos intereses)", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Servicios Administrativos": {
-      resp: "Rossana Cillis",
-      items: [
-        { ind: "Cumplimiento de digitalización de archivos", meses: ['','','','','','','','','','','',''] },
-        { ind: "Eficacia en los cierres de requerimientos", meses: ['','','','','','','','','','','',''] },
-        { ind: "Ocupación de espacios publicitarios", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "TIC": {
-      resp: "Johan Charris",
-      items: [
-        { ind: "Eficiencia de los proyectos (Software)", meses: ['','','','','','','','','','','',''] },
-        { ind: "Eficacia de los proyectos", meses: ['','','','','','','','','','','',''] },
-        { ind: "Eficacia del soporte", meses: ['','','','','','','','','','','',''] },
-        { ind: "Eficiencia del soporte", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento de cronograma de mantenimiento", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento del cronograma copia de seguridad", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Servicio al Cliente": {
-      resp: "Antonella Arango",
-      items: [
-        { ind: "Nivel de satisfacción cliente", meses: ['','','','','','','','','','','',''] },
-        { ind: "Eficiencia en la Atención de reportes de daños", meses: ['','','','','','','','','','','',''] },
-        { ind: "Nivel de quejas del servicio", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Comunicación": {
-      resp: "Andrea Salgado",
-      items: [
-        { ind: "Comunicaciones internas/externas", meses: ['','','','','','','','','','','',''] },
-        { ind: "Métricas internas redes sociales: Instagram, Facebook, X y LinkedIn", meses: ['','','','','','','','','','','',''] },
-        { ind: "Métricas de página web", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Planeación Proyectos": {
-      resp: "Lilian Guerrero",
-      items: [
-        { ind: "Cantidad de proyectos vigentes", meses: ['','','','','','','','','','','',''] },
-        { ind: "Tasa de éxito en licitaciones", meses: ['','','','','','','','','','','',''] },
-        { ind: "% de propuestas entregadas en plazo", meses: ['','','','','','','','','','','',''] },
-        { ind: "Índice de diversificación de clientes", meses: ['','','','','','','','','','','',''] },
-        { ind: "Inversiones nuevos proyectos / expansiones adjudicados", meses: ['','','','','','','','','','','',''] },
-        { ind: "Ingresos anuales totales en fiducia", meses: ['','','','','','','','','','','',''] },
-        { ind: "% ingresos nuevos contribuyentes / fuentes", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Asuntos Legales": {
-      resp: "Adiel Carrascal",
-      items: [
-        { ind: "Eficacia de los contratos", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento de los procesos jurídicos", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento de los requisitos legales y reglamentarios", meses: ['','','','','','','','','','','',''] },
-        { ind: "Tiempo de respuesta a los usuarios (Anual)", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Infraestructura y Activos": {
-      resp: "Rosana Barraza",
-      items: [
-        { ind: "% de activos registrados", meses: ['','','','','','','','','','','',''] },
-        { ind: "Atención RQ generadas por clientes internos (Infraestructura / Máquinas / Muebles)", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento del plan de mantenimiento preventivo (Infraestructura / Máquinas / Muebles)", meses: ['','','','','','','','','','','',''] },
-        { ind: "% de activos dados de baja monetizados - Ahorro y reducción de pérdidas", meses: ['','','','','','','','','','','',''] },
-        { ind: "Programa uso eficiente del agua", meses: ['','','','','','','','','','','',''] },
-        { ind: "Programa uso eficiente de energía", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Sagrilaft": {
-      resp: "Lilian Guerrero",
-      items: [
-        { ind: "Índice de Cumplimiento de Política de Transparencia y Ética Empresarial", meses: ['','','','','','','','','','','',''] },
-        { ind: "Seguimiento al Cumplimiento del Programa de Transparencia y Ética Empresarial", meses: ['','','','','','','','','','','',''] },
-        { ind: "Seguimiento al Cumplimiento de procedimientos e instructivos del SG SAGRILAFT", meses: ['','','','','','','','','','','',''] },
-        { ind: "Seguimiento a la notificación de Operaciones Sospechosas / Inusuales", meses: ['','','','','','','','','','','',''] },
-        { ind: "Control de Reporte ante UIAF", meses: ['','','','','','','','','','','',''] },
-        { ind: "Control de Consulta en Listas", meses: ['','','','','','','','','','','',''] },
-        { ind: "Gestión de la capacitación del personal", meses: ['','','','','','','','','','','',''] },
-        { ind: "IPC Índice Percepción Corrupción en Colombia", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "SGI": {
-      resp: "Christian Cañas",
-      items: [
-        { ind: "Cumplimiento del Plan de Trabajo", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento del Plan de Capacitaciones", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento de Matriz de Requisitos Legales", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento del presupuesto del SGI", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento en efectividad de acciones", meses: ['','','','','','','','','','','',''] },
-        { ind: "% de Cumplimiento del personal en responsabilidad con la SST - Rendición de cuenta", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Salud": {
-      resp: "Kelly Martínez",
-      items: [
-        { ind: "Cumplimiento del SVE Biomecánico", meses: ['','','','','','','','','','','',''] },
-        { ind: "Incidencia del SVE Biomecánico", meses: ['','','','','','','','','','','',''] },
-        { ind: "Prevalencia del SVE Biomecánico", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento del SVE de Riesgo Psicosocial", meses: ['','','','','','','','','','','',''] },
-        { ind: "Resultado Batería Riesgo Psicosocial", meses: ['','','','','','','','','','','',''] },
-        { ind: "Incidencia del SVE de Riesgo Psicosocial", meses: ['','','','','','','','','','','',''] },
-        { ind: "Prevalencia del SVE de Riesgo Psicosocial", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento del programa de medicina laboral", meses: ['','','','','','','','','','','',''] },
-        { ind: "Casos de Reubicación / Rehabilitación Laboral", meses: ['','','','','','','','','','','',''] },
-        { ind: "Casos de IBS (Indicadores Básicos de Salud)", meses: ['','','','','','','','','','','',''] },
-        { ind: "Casos asociados a los programas de vigilancia", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Seguridad": {
-      resp: "Christian Cañas",
-      items: [
-        { ind: "Accidentalidad Directos", meses: ['','','','','','','','','','','',''] },
-        { ind: "Accidentalidad Misión", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento de los diferentes programas", meses: ['','','','','','','','','','','',''] },
-        { ind: "Accidentalidad relacionada con los diferentes riesgos", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "PESV": {
-      resp: "Eddie Nieto",
-      items: [
-        { ind: "TASA DE SINIESTROS VIALES POR NIVEL DE PÉRDIDA - TSV", meses: ['','','','','','','','','','','',''] },
-        { ind: "COSTOS DE LOS SINIESTROS VIALES", meses: ['','','','','','','','','','','',''] },
-        { ind: "RIESGOS VIALES", meses: ['','','','','','','','','','','',''] },
-        { ind: "% EXCESO JORNADAS LABORALES", meses: ['','','','','','','','','','','',''] },
-        { ind: "CUMPLIMIENTO DE LAS METAS DEL PESV", meses: ['','','','','','','','','','','',''] },
-        { ind: "CUMPLIMIENTO DEL PLAN ANUAL DEL PESV (4.3)", meses: ['','','','','','','','','','','',''] },
-        { ind: "INSPECCIONES DIARIAS PREOPERACIONALES (4.6)", meses: ['','','','','','','','','','','',''] },
-        { ind: "CUMPLIMIENTO DEL CRONOGRAMA DE MANTENIMIENTO (4.5)", meses: ['','','','','','','','','','','',''] },
-        { ind: "CUMPLIMIENTO DEL PLAN DE CAPACITACIONES (4.2)", meses: ['','','','','','','','','','','',''] },
-        { ind: "COBERTURA: PERSONAL FORMADO SEGURIDAD VIAL (todos los actores)", meses: ['','','','','','','','','','','',''] },
-        { ind: "NO CONFORMIDADES DE AUDITORÍAS CERRADAS", meses: ['','','','','','','','','','','',''] },
-        { ind: "IMPACTO ECONÓMICO DE COMPARENDOS - VEHÍCULOS", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
-    "Ambiental": {
-      resp: "Deisy Ballesteros",
-      items: [
-        { ind: "Índice de Cumplimiento de los Programas Ambientales", meses: ['','','','','','','','','','','',''] },
-        { ind: "Gestión eficiente de residuos", meses: ['','','','','','','','','','','',''] },
-        { ind: "Cumplimiento Capacitaciones", meses: ['','','','','','','','','','','',''] },
-        { ind: "Control Químico - XILOL AU", meses: ['','','','','','','','','','','',''] },
-        { ind: "Limpieza de parques", meses: ['','','','','','','','','','','',''] },
-        { ind: "Consumo de O&M", meses: ['','','','','','','','','','','',''] },
-        { ind: "Huella de carbono vehicular", meses: ['','','','','','','','','','','',''] },
-        { ind: "Índice de Cumplimiento de la Revisión Tecnomecánica", meses: ['','','','','','','','','','','',''] },
-        { ind: "Índice de Cumplimiento de Opacidad Vehicular", meses: ['','','','','','','','','','','',''] },
-        { ind: "Consumo de combustible Vehicular", meses: ['','','','','','','','','','','',''] },
-        { ind: "Consumo de Papel en la operación", meses: ['','','','','','','','','','','',''] },
-      ]
-    },
+    "Amoblamiento Urbano": { resp: "Sneyder Quintero", items: [
+      { ind: "Cumplimiento de las obligaciones contractuales", meta: "80%",      meses: ['V','V','R','','','','','','','','',''] },
+      { ind: "Cumplimiento de mantenimientos",                meta: "80%",      meses: ['V','V','R','','','','','','','','',''] },
+      { ind: "Intervención de parques",                       meta: "90%",      meses: ['V','V','R','','','','','','','','',''] },
+      { ind: "Funcionamiento óptimo de semáforos",            meta: "95%",      meses: ['V','V','R','','','','','','','','',''] },
+    ]},
+    "Prod. Metalmecánica": { resp: "Luis Daza", items: [
+      { ind: "Cumplimiento de la programación",               meta: "80%",      meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Ejecución de cotizaciones para gastos Op.",     meta: "En estudio", meses: ['R','R','R','','','','','','','','',''] },
+    ]},
+    "Iluminación Urbana": { resp: "Shirly Duque", items: [
+      { ind: "Reportes de Daños por municipio",                                                          meta: ">80%",      meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "% Cumplimiento obligaciones contractuales O&M por municipio",                              meta: ">80%",      meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "% Cumplimiento obligaciones contractuales MODERNIZACIÓN y EXPANSIONES por municipio",      meta: ">80%",      meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Eficiencia del sistema lumínico por municipio",                                            meta: ">90%",      meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Índice de Contratos con Luminarias de Ahorro Energético",                                  meta: "En estudio",meses: ['V','V','V','','','','','','','','',''] },
+    ]},
+    "Compras": { resp: "Ana Cortés", items: [
+      { ind: "Clasificación de compras según procesos",        meta: "En estudio", meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Porcentaje de compras planificadas",             meta: "En estudio", meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Eficacia de la negociación con proveedores",     meta: "En estudio", meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Eficacia de la negociación con contratista",     meta: "En estudio", meses: ['V','V','V','V','','','','','','','',''] },
+    ]},
+    "Logística": { resp: "Ana Cortés", items: [
+      { ind: "Exactitud de inventarios",                       meta: "Estratégico", meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Exactitud de inventarios cíclico",               meta: "En estudio",  meses: ['V','V','V','','','','','','','','',''] },
+    ]},
+    "GTH": { resp: "Andrea Gómez", items: [
+      { ind: "Índice de Movimientos internos",                 meta: "En estudio", meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Índice de Rotación",                             meta: "< 2",        meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Índice contratación",                            meta: ">90%",       meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Cumplimiento, Cobertura y Eficacia planes de capacitación o formación", meta: ">80%", meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Índice de Ausentismo laboral",                   meta: "< 2%",       meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Efectividad del periodo de prueba personal directo", meta: "—",      meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Índice de Gestión de Quejas Internas",           meta: "0",          meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Medición clima laboral - Great Place to Work",   meta: "—",          meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Índice de proceso disciplinario",                meta: "0",          meses: ['R','R','R','','','','','','','','',''] },
+    ]},
+    "EFR": { resp: "Andrea Gómez", items: [
+      { ind: "Propuesta de valor de conciliación",                                                          meta: "—", meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "Estabilidad en el empleo",                                                                    meta: "—", meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "Flexibilidad temporal",                                                                        meta: "—", meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "Flexibilidad espacial",                                                                        meta: "—", meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "Conocimiento, utilización, satisfacción, valoración y aplicabilidad de las medidas",           meta: "—", meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "Maternidad",                                                                                    meta: "—", meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "Igualdad de oportunidades entre Hombres y Mujeres",                                            meta: "—", meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "Igualdad de oportunidades - Otras formas de diversidad",                                       meta: "—", meses: ['ANUAL','','','','','','','','','','',''] },
+    ]},
+    "Financiera": { resp: "Karina Franco", items: [
+      { ind: "Índice de Cumplimiento de Ingresos (facturados reales / proyectados)", meta: "80%", meses: ['A','R','R','','','','','','','','',''] },
+      { ind: "Índice de solvencia",                            meta: "90%", meses: ['V','R','R','','','','','','','','',''] },
+      { ind: "Índice razón de cobertura (Utilidad operacional / Gastos intereses)", meta: "90%", meses: ['A','R','R','','','','','','','','',''] },
+    ]},
+    "Servicios Administrativos": { resp: "Rossana Cillis", items: [
+      { ind: "Cumplimiento de digitalización de archivos",     meta: "95%", meses: ['V','A','V','','','','','','','','',''] },
+      { ind: "Eficacia en los cierres de requerimientos",      meta: "90%", meses: ['A','A','V','','','','','','','','',''] },
+      { ind: "Ocupación de espacios publicitarios",            meta: "70%", meses: ['A','A','A','','','','','','','','',''] },
+    ]},
+    "TIC": { resp: "Johan Charris", items: [
+      { ind: "Eficiencia de los proyectos (Software)",         meta: "80%", meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Eficacia de los proyectos",                      meta: "80%", meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Eficacia del soporte",                           meta: "80%", meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Eficiencia del soporte",                         meta: "80%", meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Cumplimiento de cronograma de mantenimiento",    meta: "80%", meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Cumplimiento del cronograma copia de seguridad", meta: "80%", meses: ['R','R','R','','','','','','','','',''] },
+    ]},
+    "Servicio al Cliente": { resp: "Antonella Arango", items: [
+      { ind: "Nivel de satisfacción cliente",                  meta: "4.00 (sobre 5)", meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Eficiencia en la Atención de reportes de daños", meta: "≥ 80%",          meses: ['A','A','A','A','','','','','','','',''] },
+      { ind: "Nivel de quejas del servicio",                   meta: "0",               meses: ['R','R','R','R','','','','','','','',''] },
+    ]},
+    "Comunicación": { resp: "Andrea Salgado", items: [
+      { ind: "Comunicaciones internas/externas",               meta: "80%",             meses: ['A','V','V','','','','','','','','',''] },
+      { ind: "Métricas internas redes sociales (Instagram, Facebook, X, LinkedIn)", meta: "# seguidores", meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Métricas de página web (TIC pendiente acceso)",  meta: "—",               meses: ['V','','','TRIMESTRE II','','','TRIMESTRE III','','','TRIMESTRE IV','',''] },
+    ]},
+    "Planeación Proyectos": { resp: "Lilian Guerrero", items: [
+      { ind: "Cantidad de proyectos vigentes",                 meta: "Informativo",   meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "Tasa de éxito en licitaciones",                  meta: "100%",          meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "% de propuestas entregadas en plazo",            meta: "100%",          meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Índice de diversificación de clientes",          meta: "5%",            meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Inversiones nuevos proyectos / expansiones adjudicados", meta: "20.000 MM", meses: ['A','A','A','A','','','','','','','',''] },
+      { ind: "Ingresos anuales totales en fiducia",            meta: "60.000 MM",     meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "% ingresos nuevos contribuyentes / fuentes",     meta: "5%",            meses: ['ANUAL','','','','','','','','','','',''] },
+    ]},
+    "Asuntos Legales": { resp: "Adiel Carrascal", items: [
+      { ind: "Eficacia de los contratos",                                           meta: ">80%",                          meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Cumplimiento de los procesos jurídicos",                               meta: ">80%",                          meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Cumplimiento de los requisitos legales y reglamentarios",              meta: "No sanciones",                  meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Tiempo de respuesta a los usuarios",                                   meta: ">80%",                          meses: ['V','V','V','','','','','','','','',''] },
+    ]},
+    "Infraestructura y Activos": { resp: "Rosana Barraza", items: [
+      { ind: "% de activos registrados",                        meta: "95%",          meses: ['A','A','A','A','','','','','','','',''] },
+      { ind: "Atención RQ clientes internos (Infraestructura / Máquinas / Muebles)", meta: "90%", meses: ['V','A','A','A','','','','','','','',''] },
+      { ind: "Cumplimiento plan mantenimiento preventivo",      meta: "90%",          meses: ['A','A','A','A','','','','','','','',''] },
+      { ind: "% activos dados de baja monetizados",             meta: "En estudio",   meses: ['R','R','R','R','','','','','','','',''] },
+      { ind: "Programa uso eficiente del agua",                 meta: "En estudio",   meses: ['R','R','R','R','','','','','','','',''] },
+      { ind: "Programa uso eficiente de energía",               meta: "En estudio",   meses: ['V','V','V','V','','','','','','','',''] },
+    ]},
+    "Sagrilaft": { resp: "Lilian Guerrero", items: [
+      { ind: "Índice de Cumplimiento de Política de Transparencia y Ética Empresarial",   meta: ">100%",                    meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Seguimiento al Cumplimiento del Programa de Transparencia y Ética",         meta: ">100%",                    meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Seguimiento al Cumplimiento de procedimientos e instructivos SG SAGRILAFT", meta: ">100%",                    meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Seguimiento a la notificación de Operaciones Sospechosas / Inusuales",      meta: "> 0",                      meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Control de Reporte ante UIAF",                    meta: "Alerta > positivo",          meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Control de Consulta en Listas",                   meta: "> 70% proveedores activos",  meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Gestión de la capacitación del personal",         meta: "> 70% personal",             meses: ['V','','','','','','','','','','',''] },
+      { ind: "IPC Índice Percepción Corrupción en Colombia",    meta: "Informativo",                meses: ['ANUAL','','','','','','','','','','',''] },
+    ]},
+    "SGI": { resp: "Christian Cañas", items: [
+      { ind: "Cumplimiento del Plan de Trabajo",                meta: ">90%",  meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Cumplimiento del Plan de Capacitaciones",         meta: ">90%",  meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Cumplimiento de Matriz de Requisitos Legales",    meta: ">100%", meses: ['SEMESTRAL','','','','','','SEMESTRAL','','','','',''] },
+      { ind: "Cumplimiento del presupuesto del SGI",            meta: ">80%",  meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "Cumplimiento en efectividad de acciones",         meta: ">85%",  meses: ['R','R','R','','','','','','','','',''] },
+      { ind: "% Cumplimiento personal en responsabilidad SST - Rendición de cuenta", meta: ">80%", meses: ['BIANUAL','','','','','','','','','','',''] },
+    ]},
+    "Salud": { resp: "Kelly Martínez", items: [
+      { ind: "Cumplimiento SVE Biomecánico",                    meta: ">80%",  meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Incidencia y Prevalencia enfermedades laborales SVE Biomecánico Osteomuscular", meta: "0%", meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Cumplimiento SVE Riesgo Psicosocial",             meta: ">80%",  meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Resultado Batería Riesgo Psicosocial",            meta: "> Bajo",meses: ['BIANUAL','','','','','','','','','','',''] },
+      { ind: "Incidencia y prevalencia SVE Riesgo Psicosocial", meta: "0%",   meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Cumplimiento programa de medicina laboral",       meta: "100%",  meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Casos de Reubicación / Rehabilitación Laboral",   meta: "0%",   meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "Casos de IBS (Indicadores Básicos de Salud)",     meta: "0",    meses: ['V','A','A','','','','','','','','',''] },
+      { ind: "Casos asociados a los programas de vigilancia",   meta: "0",    meses: ['V','V','V','','','','','','','','',''] },
+    ]},
+    "Seguridad": { resp: "Christian Cañas", items: [
+      { ind: "Accidentalidad Directos",                         meta: "N° accidentes ≤2 / Días incapacidad ≤6", meses: ['V','V','A','','','','','','','','',''] },
+      { ind: "Accidentalidad Misión",                           meta: "N° accidentes ≤9 / Días incapacidad ≤18", meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Cumplimiento de los diferentes programas",        meta: ">80%", meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Accidentalidad relacionada con los diferentes riesgos", meta: "0%", meses: ['V','V','A','','','','','','','','',''] },
+    ]},
+    "PESV": { resp: "Eddie Nieto", items: [
+      { ind: "Tasa de siniestros viales por nivel de pérdida - TSV", meta: "20 Anual", meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Costos de los siniestros viales",                 meta: "< 3 SMLV",     meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Riesgos viales",                                  meta: "Línea basal 2023", meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "% Exceso jornadas laborales",                     meta: "90%",          meses: ['','','','','','','','','','','',''] },
+      { ind: "Cumplimiento de las metas del PESV",              meta: "90%",          meses: ['A','V','V','','','','','','','','',''] },
+      { ind: "Cumplimiento del Plan Anual del PESV (4.3)",      meta: "90%",          meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Inspecciones diarias preoperacionales (4.6)",     meta: "95%",          meses: ['V','A','V','','','','','','','','',''] },
+      { ind: "Cumplimiento cronograma de mantenimiento (4.5)",  meta: "90%",          meses: ['V','V','V','','','','','','','','',''] },
+      { ind: "Cumplimiento Plan de Capacitaciones (4.2)",       meta: "90%",          meses: ['V','V','V','A','','','','','','','',''] },
+      { ind: "Cobertura: personal formado seguridad vial",      meta: "90%",          meses: ['V','A','','','','','','','','','',''] },
+      { ind: "No conformidades de auditorías cerradas",         meta: "90%",          meses: ['ANUAL','','','','','','','','','','',''] },
+      { ind: "Impacto económico de comparendos - vehículos",    meta: "< 3 SMLV",     meses: ['V','V','V','V','','','','','','','',''] },
+    ]},
+    "Ambiental": { resp: "Deisy Ballesteros", items: [
+      { ind: "Índice de Cumplimiento de los Programas Ambientales", meta: ">80%",       meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Gestión eficiente de residuos",                   meta: "En estudio",    meses: ['','','','','','','','','','','',''] },
+      { ind: "Cumplimiento Capacitaciones",                     meta: "80%",           meses: ['V','V','V','A','','','','','','','',''] },
+      { ind: "Control Químico - XILOL AU",                      meta: "En estudio",    meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Limpieza de parques",                             meta: "80%",           meses: ['V','V','','','','','','','','','',''] },
+      { ind: "Consumo de O&M",                                  meta: "En estudio",    meses: ['V','V','','','','','','','','','',''] },
+      { ind: "Huella de carbono vehicular",                     meta: "En estudio",    meses: ['V','V','','','','','','','','','',''] },
+      { ind: "Índice de Cumplimiento Revisión Tecnomecánica",   meta: "90%",           meses: ['V','V','V','V','','','','','','','',''] },
+      { ind: "Índice de Cumplimiento de Opacidad Vehicular",    meta: "80%",           meses: ['','','','','','','','','','','',''] },
+      { ind: "Consumo de combustible Vehicular",                meta: "En estudio",    meses: ['V','V','','','','','','','','','',''] },
+      { ind: "Consumo de Papel en la operación",                meta: "En estudio",    meses: ['V','A','V','V','','','','','','','',''] },
+    ]},
   };
 
   function estadoClass(e) {
@@ -770,6 +689,43 @@
     if (e === 'A') return 'cell-amarillo';
     if (e === 'R') return 'cell-rojo';
     return 'cell-vacio';
+  }
+
+  // Periodicidades: { tipo, estado, mesesOcupados[] (0-based) }
+  // Tipos: 'mensual'(default), 'anual', 'semestral', 'trimestral', 'bianual'
+  // meses[] de 12 posiciones con estado o '' o el label de periodicidad
+
+  function buildCeldas(item) {
+    const meses = item.meses; // array 12 posiciones
+    const cells = [];
+    let i = 0;
+    while (i < 12) {
+      const val = meses[i];
+      const upper = typeof val === 'string' ? val.trim().toUpperCase() : '';
+
+      // Detectar etiquetas de periodicidad
+      if (upper === 'ANUAL') {
+        cells.push({ colspan: 12, clase: 'cell-vacio', label: 'Anual', i_start: i });
+        i = 12;
+      } else if (upper === 'BIANUAL') {
+        cells.push({ colspan: 12, clase: 'cell-vacio', label: 'Bianual', i_start: i });
+        i = 12;
+      } else if (upper === 'SEMESTRAL') {
+        // Buscar si hay otro SEMESTRAL en la fila
+        const next = meses.slice(i+1).findIndex(m => typeof m === 'string' && m.trim().toUpperCase() === 'SEMESTRAL');
+        const span = next >= 0 ? (next + 1) : (12 - i);
+        cells.push({ colspan: span, clase: 'cell-vacio', label: 'Semestral', i_start: i });
+        i += span;
+      } else if (upper.startsWith('TRIMESTRE')) {
+        cells.push({ colspan: 3, clase: 'cell-vacio', label: upper, i_start: i });
+        i += 3;
+      } else {
+        // Mensual normal
+        cells.push({ colspan: 1, clase: estadoClass(val), label: '', i_start: i });
+        i++;
+      }
+    }
+    return cells;
   }
 
   function abrirDetalle(nombreProceso) {
@@ -781,12 +737,20 @@
 
     const tbody = document.getElementById('detalleCuerpo');
     tbody.innerHTML = '';
+
     data.items.forEach(item => {
       const tr = document.createElement('tr');
-      const mesesCells = item.meses.map(m =>
-        `<td style="text-align:center"><span class="cell-dot ${estadoClass(m)}"></span></td>`
-      ).join('');
-      tr.innerHTML = `<td class="td-ind">${item.ind}</td>${mesesCells}`;
+      const celdas = buildCeldas(item);
+      const mesesCells = celdas.map(c => {
+        const w = c.colspan === 1 ? '100%' : '100%';
+        const inner = c.label
+          ? `<span class="periodo-label">${c.label}</span>`
+          : '';
+        return `<td colspan="${c.colspan}" style="padding:2px ${c.colspan>1?'4px':'3px'};">
+          <div class="cell-bloque ${c.clase}" style="width:${w};">${inner}</div>
+        </td>`;
+      }).join('');
+      tr.innerHTML = `<td class="td-ind">${item.ind}</td><td class="td-meta">${item.meta || '—'}</td>${mesesCells}`;
       tbody.appendChild(tr);
     });
 
